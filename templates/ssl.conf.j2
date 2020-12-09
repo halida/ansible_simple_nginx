@@ -1,0 +1,7 @@
+ssl_certificate     {{nginx_path}}/ssl/{{item['name']}}/{{item['crt'] | basename}};
+ssl_certificate_key {{nginx_path}}/ssl/{{item['name']}}/{{item['key'] | basename}};
+ssl_protocols TLSv1.2;
+
+# Diffie-Hellman parameter for DHE ciphersuites, recommended 2048 bits
+ssl_dhparam {{nginx_path}}/ssl/{{item['name']}}/{{item['dhparam'] | basename}};
+ssl_session_timeout 5m;

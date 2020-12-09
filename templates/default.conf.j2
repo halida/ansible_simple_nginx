@@ -1,0 +1,23 @@
+# disable IP access
+server {
+    listen 80 default_server;
+    server_name "";
+
+    location / {
+        return 200 'server ok';
+        add_header Content-Type text/plain;
+    }
+}
+
+server {
+    listen 443 default_server;
+    server_name "";
+
+    ssl on;
+    include {{nginx_path}}/ssl/ssl_{{ ssl_name }}.conf;
+
+    location / {
+        return 200 'server ok';
+        add_header Content-Type text/plain;
+    }
+}

@@ -1,0 +1,24 @@
+---
+- name: install nginx package
+  apt:
+    name: nginx
+
+- name: create helper path
+  file:
+    path: "{{nginx_path}}/helpers"
+    state: directory
+    owner: root
+    group: root
+
+- name: copy helper files
+  copy:
+    src: "files/helpers/{{item}}"
+    dest: "{{nginx_path}}/helpers/{{item}}"
+  with_items:
+    - "asset.conf"
+    - "maintenance.conf"
+
+- name: remove default
+  file:
+    path: "{{nginx_path}}/sites-enabled/default"
+    state: absent

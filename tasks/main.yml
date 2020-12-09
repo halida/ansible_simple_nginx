@@ -1,0 +1,19 @@
+- name: install nginx
+  include: 'nginx.yml'
+  become: yes
+  when: nginx != false
+
+- name: ssl
+  include: 'ssl.yml'
+  become: yes
+
+- name: restart nginx
+  service: name=nginx state=restarted enabled=true
+  become: true
+  when: nginx != false
+
+- name: apps
+  include: "app.yml"
+  become: yes
+  with_items: "{{apps}}"
+

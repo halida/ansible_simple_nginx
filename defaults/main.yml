@@ -1,0 +1,5 @@
+nginx_path: '/etc/nginx'
+nginx: true
+crt: 'x.crt'
+key: 'x.key'
+dhparam: 'dhparam.pem'
