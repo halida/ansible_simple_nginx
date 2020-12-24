@@ -3,9 +3,13 @@ server {
     listen 80 default_server;
     server_name "";
 
-    location / {
+    location = / {
         return 200 'server ok';
         add_header Content-Type text/plain;
+    }
+    root /var/www/html;
+    location / {
+        try_files $uri $uri/ =404;
     }
 }
 
@@ -16,8 +20,12 @@ server {
     ssl on;
     include {{nginx_path}}/ssl/ssl_{{ ssl_name }}.conf;
 
-    location / {
+    location = / {
         return 200 'server ok';
         add_header Content-Type text/plain;
+    }
+    root /var/www/html;
+    location / {
+        try_files $uri $uri/ =404;
     }
 }

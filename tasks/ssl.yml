@@ -24,11 +24,3 @@
     src: "ssl.conf.j2"
     dest: "{{nginx_path}}/ssl/ssl_{{ item['name'] }}.conf"
   with_items: "{{ ssl }}"
-
-- name: default with ssl on
-  template:
-    src: "default.conf.j2"
-    dest: "{{nginx_path}}/sites-enabled/default.conf"
-  vars:
-    ssl_name: "{{ ssl[0]['name'] }}"
-

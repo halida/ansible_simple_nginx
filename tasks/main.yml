@@ -7,6 +7,13 @@
   include: 'ssl.yml'
   become: yes
 
+- name: default
+  template:
+    src: "default.conf.j2"
+    dest: "{{nginx_path}}/sites-enabled/default.conf"
+  vars:
+    ssl_name: "{{ ssl[0]['name'] }}"
+
 - name: restart nginx
   service: name=nginx state=restarted enabled=true
   become: true
