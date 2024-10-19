@@ -1,18 +1,7 @@
-- name: install nginx
-  include: 'nginx.yml'
-  become: yes
+- include_tasks: 'nginx.yml'
   when: nginx != false
 
-- name: ssl
-  include: 'ssl.yml'
-  become: yes
-
-- name: default
-  template:
-    src: "default.conf.j2"
-    dest: "{{nginx_path}}/sites-enabled/default.conf"
-  vars:
-    ssl_name: "{{ ssl[0]['name'] }}"
+- include_tasks: 'ssl.yml'
 
 - name: restart nginx
   service: name=nginx state=restarted enabled=true
@@ -20,7 +9,5 @@
   when: nginx != false
 
 - name: apps
-  include: "app.yml"
-  become: yes
+  include_tasks: "app.yml"
   with_items: "{{apps}}"
-

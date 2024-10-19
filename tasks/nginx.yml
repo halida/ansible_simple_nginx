@@ -2,6 +2,7 @@
 - name: install nginx package
   apt:
     name: nginx
+  become: yes
 
 - name: create helper path
   file:
@@ -9,6 +10,7 @@
     state: directory
     owner: root
     group: root
+  become: yes
 
 - name: copy helper files
   copy:
@@ -17,8 +19,10 @@
   with_items:
     - "asset.conf"
     - "maintenance.conf"
+  become: yes
 
 - name: remove default
   file:
     path: "{{nginx_path}}/sites-enabled/default"
     state: absent
+  become: yes

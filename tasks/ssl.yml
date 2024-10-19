@@ -3,6 +3,7 @@
     path: "{{nginx_path}}/ssl"
     state: directory
     mode: 0700
+  become: yes
 
 - name: create sub ssl path
   file:
@@ -10,6 +11,7 @@
     state: directory
     mode: 0700
   with_items: "{{ ssl }}"
+  become: yes
 
 - name: copy files
   copy:
@@ -18,9 +20,19 @@
   with_nested:
     - "{{ ssl }}"
     - ['crt', 'key', 'dhparam']
+  become: yes
 
 - name: copy config
   template:
     src: "ssl.conf.j2"
     dest: "{{nginx_path}}/ssl/ssl_{{ item['name'] }}.conf"
   with_items: "{{ ssl }}"
+  become: yes
+
+- name: default with ssl on
+  template:
+    src: "default.conf.j2"
+    dest: "{{nginx_path}}/sites-enabled/default.conf"
+  vars:
+    ssl_name: "{{ ssl[0]['name'] }}"
+  become: yes
