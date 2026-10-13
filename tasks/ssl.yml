@@ -32,7 +32,7 @@
 - name: default with ssl on
   template:
     src: "default.conf.j2"
-    dest: "{{nginx_path}}/sites-enabled/default.conf"
+    dest: "{{ nginx_sites_enabled }}/{{ nginx_default_conf_name }}"
   vars:
     ssl_name: "{{ ssl[0]['name'] }}"
   become: yes

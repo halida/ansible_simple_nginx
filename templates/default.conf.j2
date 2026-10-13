@@ -14,10 +14,9 @@ server {
 }
 
 server {
-    listen 443 default_server;
+    listen 443 ssl default_server;
     server_name "";
 
-    ssl on;
     include {{nginx_path}}/ssl/ssl_{{ ssl_name }}.conf;
 
     location = / {
@@ -29,3 +28,4 @@ server {
         try_files $uri $uri/ =404;
     }
 }
+

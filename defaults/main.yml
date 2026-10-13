@@ -3,3 +3,12 @@ nginx: true
 crt: 'x.crt'
 key: 'x.key'
 dhparam: 'dhparam.pem'
+
+# Per-OS nginx site layout. Defaults match Debian/Ubuntu; on Arch/Omarchy
+# the sites-available/sites-enabled directories are not created by the
+# nginx package, so we fall back to /etc/nginx/sites-enabled with a single
+# include line we add to nginx.conf.
+nginx_sites_available: "{{ nginx_path }}/sites-available"
+nginx_sites_enabled: "{{ nginx_path }}/sites-enabled"
+nginx_default_include_line: "include {{ nginx_sites_enabled }}/*.conf;"
+nginx_default_conf_name: "default.conf"

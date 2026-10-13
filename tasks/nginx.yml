@@ -1,6 +1,6 @@
 ---
 - name: install nginx package
-  apt:
+  package:
     name: nginx
   become: yes
 
@@ -21,8 +21,36 @@
     - "maintenance.conf"
   become: yes
 
-- name: remove default
+- name: create sites-available directory
   file:
-    path: "{{nginx_path}}/sites-enabled/default"
+    path: "{{ nginx_sites_available }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+
+- name: create sites-enabled directory
+  file:
+    path: "{{ nginx_sites_enabled }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+
+- name: ensure nginx.conf includes sites-enabled
+  lineinfile:
+    path: "{{ nginx_path }}/nginx.conf"
+    line: "{{ nginx_default_include_line }}"
+    insertafter: '^(\s*)http\s*\{'
+    regexp: 'sites-enabled'
+    state: present
+  become: yes
+
+- name: remove default site symlink
+  file:
+    path: "{{ nginx_sites_enabled }}/{{ nginx_default_conf_name }}"
     state: absent
   become: yes
+  ignore_errors: yes
